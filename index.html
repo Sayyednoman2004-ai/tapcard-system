@@ -179,65 +179,79 @@ button:active{
 
 </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+const SUPABASE_URL = "https://wtuisojeevsibpjrdvwd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_yxmvigaGlrS8VIb_x_2RkQ_Q81kRd8b";
 
-function activateCard(){
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-  const cardNumber =
-    document.getElementById("cardNumber").value.trim();
+async function activateCard() {
+  const cardNumber = document.getElementById("cardNumber").value.trim();
+  const cardType = document.getElementById("cardType").value;
+  const shopName = document.getElementById("shopName").value.trim();
+  const destinationUrl = document.getElementById("destinationUrl").value.trim();
+  const agentName = document.getElementById("agentName").value.trim();
+  const result = document.getElementById("result");
 
-  const cardType =
-    document.getElementById("cardType").value;
+  result.style.display = "block";
 
-  const shopName =
-    document.getElementById("shopName").value.trim();
-
-  const destinationUrl =
-    document.getElementById("destinationUrl").value.trim();
-
-  const agentName =
-    document.getElementById("agentName").value.trim();
-
-  const result =
-    document.getElementById("result");
-
-  if(!cardNumber ||
-     !cardType ||
-     !shopName ||
-     !destinationUrl ||
-     !agentName){
-
-    result.style.display="block";
-    result.style.background="#fef2f2";
-    result.style.color="#991b1b";
-    result.innerHTML="❌ Please fill all fields.";
+  if (!cardNumber || !cardType || !shopName || !destinationUrl || !agentName) {
+    result.style.background = "#fef2f2";
+    result.style.color = "#991b1b";
+    result.innerHTML = "❌ Please fill all fields.";
     return;
   }
 
-  try{
+  try {
     new URL(destinationUrl);
-  }catch(e){
-    result.style.display="block";
-    result.style.background="#fef2f2";
-    result.style.color="#991b1b";
-    result.innerHTML="❌ Please enter a valid URL.";
+  } catch {
+    result.style.background = "#fef2f2";
+    result.style.color = "#991b1b";
+    result.innerHTML = "❌ Please enter a valid URL.";
     return;
   }
 
-  result.style.display="block";
-  result.style.background="#ecfdf5";
-  result.style.color="#166534";
+  const { data, error } = await db
+    .from("cards")
+    .update({
+      card_type: cardType,
+      shop_name: shopName,
+      destination_url: destinationUrl,
+      agent_name: agentName,
+      status: "Activated",
+      activated_at: new Date().toISOString()
+    })
+    .eq("card_number", cardNumber)
+    .eq("status", "Available")
+    .select();
 
+  if (error) {
+    result.style.background = "#fef2f2";
+    result.style.color = "#991b1b";
+    result.innerHTML = "❌ Error: " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    result.style.background = "#fff7ed";
+    result.style.color = "#9a3412";
+    result.innerHTML = "⚠️ Card not found or already activated.";
+    return;
+  }
+
+  result.style.background = "#ecfdf5";
+  result.style.color = "#166534";
   result.innerHTML =
-    "✅ Card " + cardNumber +
-    " is ready for activation.<br><br>" +
-    "Shop: " + shopName +
-    "<br>Type: " + cardType +
-    "<br>Agent: " + agentName;
-
+    "✅ Card activated successfully!<br><br>" +
+    "Card: " + cardNumber + "<br>" +
+    "Shop: " + shopName + "<br>" +
+    "Type: " + cardType + "<br>" +
+    "Agent: " + agentName;
 }
-
-</script>
-
-</body>
-</html>
+  </script>
