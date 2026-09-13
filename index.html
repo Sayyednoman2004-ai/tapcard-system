@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TapCard - Agent Activation</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f4f6f8;
+  min-height:100vh;
+  padding:25px 15px;
+}
+
+.container{
+  max-width:500px;
+  margin:auto;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:800;
+  color:#111827;
+}
+
+.logo span{
+  color:#16a34a;
+}
+
+.subtitle{
+  color:#6b7280;
+  margin-top:7px;
+}
+
+.card{
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+h2{
+  margin-bottom:20px;
+  color:#111827;
+}
+
+label{
+  display:block;
+  font-weight:600;
+  margin:15px 0 7px;
+  color:#374151;
+}
+
+input,select{
+  width:100%;
+  padding:13px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  font-size:16px;
+  outline:none;
+}
+
+input:focus,select:focus{
+  border-color:#16a34a;
+}
+
+button{
+  width:100%;
+  border:0;
+  padding:14px;
+  margin-top:22px;
+  border-radius:10px;
+  background:#16a34a;
+  color:white;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+.info{
+  margin-top:18px;
+  padding:13px;
+  background:#f0fdf4;
+  border-radius:10px;
+  color:#166534;
+  font-size:14px;
+}
+
+#result{
+  display:none;
+  margin-top:18px;
+  padding:15px;
+  border-radius:10px;
+  background:#ecfdf5;
+  color:#166534;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">Tap<span>Card</span></div>
+    <div class="subtitle">Agent Card Activation System</div>
+  </div>
+
+  <div class="card">
+
+    <h2>Activate Card</h2>
+
+    <label>Card Number</label>
+    <input
+      type="text"
+      id="cardNumber"
+      placeholder="Example: TR0001"
+      autocomplete="off"
+    >
+
+    <label>Card Type</label>
+    <select id="cardType">
+      <option value="">Select Card Type</option>
+      <option value="google_review">Google Review</option>
+      <option value="whatsapp_group">WhatsApp Group</option>
+      <option value="instagram">Instagram</option>
+    </select>
+
+    <label>Shop Name</label>
+    <input
+      type="text"
+      id="shopName"
+      placeholder="Example: ABC Mobile"
+    >
+
+    <label>Customer Link</label>
+    <input
+      type="url"
+      id="destinationUrl"
+      placeholder="Paste customer link here"
+    >
+
+    <label>Agent Name</label>
+    <input
+      type="text"
+      id="agentName"
+      placeholder="Example: Rahul"
+    >
+
+    <button onclick="activateCard()">
+      Activate Card
+    </button>
+
+    <div class="info">
+      💡 Agent card number aur customer ki link enter karke
+      card activate karega.
+    </div>
+
+    <div id="result"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+function activateCard(){
+
+  const cardNumber =
+    document.getElementById("cardNumber").value.trim();
+
+  const cardType =
+    document.getElementById("cardType").value;
+
+  const shopName =
+    document.getElementById("shopName").value.trim();
+
+  const destinationUrl =
+    document.getElementById("destinationUrl").value.trim();
+
+  const agentName =
+    document.getElementById("agentName").value.trim();
+
+  const result =
+    document.getElementById("result");
+
+  if(!cardNumber ||
+     !cardType ||
+     !shopName ||
+     !destinationUrl ||
+     !agentName){
+
+    result.style.display="block";
+    result.style.background="#fef2f2";
+    result.style.color="#991b1b";
+    result.innerHTML="❌ Please fill all fields.";
+    return;
+  }
+
+  try{
+    new URL(destinationUrl);
+  }catch(e){
+    result.style.display="block";
+    result.style.background="#fef2f2";
+    result.style.color="#991b1b";
+    result.innerHTML="❌ Please enter a valid URL.";
+    return;
+  }
+
+  result.style.display="block";
+  result.style.background="#ecfdf5";
+  result.style.color="#166534";
+
+  result.innerHTML =
+    "✅ Card " + cardNumber +
+    " is ready for activation.<br><br>" +
+    "Shop: " + shopName +
+    "<br>Type: " + cardType +
+    "<br>Agent: " + agentName;
+
+}
+
+</script>
+
+</body>
+</html>
