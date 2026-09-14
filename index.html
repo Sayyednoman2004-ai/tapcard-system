@@ -93,13 +93,95 @@ placeholder="Enter your password"
 <div class="info">
 🔒 Authorized TapCard Admin & Agent accounts only.
 </div>
-
+<div style="text-align:center;margin-top:15px;">
+  <button
+    type="button"
+    onclick="showSignup()"
+    style="background:#111827;"
+  >
+    📝 Create Agent Account
+  </button>
+</div>
 </div>
 
 </div>
 </div>
 
+<!-- AGENT SIGNUP PAGE -->
+<div id="signupPage" class="hidden">
 
+<div class="container">
+
+<div class="header">
+<div class="logo">Tap<span>Card</span></div>
+<div class="subtitle">Agent Registration</div>
+</div>
+
+<div class="card login-box">
+
+<h2>📝 Create Agent Account</h2>
+
+<label>Agent Name</label>
+<input
+  id="signupAgentName"
+  type="text"
+  placeholder="Enter your full name"
+>
+
+<label>Phone Number</label>
+<input
+  id="signupPhone"
+  type="tel"
+  placeholder="Enter phone number"
+>
+
+<label>City</label>
+<input
+  id="signupCity"
+  type="text"
+  placeholder="Enter your city"
+>
+
+<label>Email</label>
+<input
+  id="signupEmail"
+  type="email"
+  placeholder="Enter your email"
+>
+
+<label>Password</label>
+<input
+  id="signupPassword"
+  type="password"
+  placeholder="Create a password"
+>
+
+<label>Confirm Password</label>
+<input
+  id="signupConfirmPassword"
+  type="password"
+  placeholder="Confirm your password"
+>
+
+<button onclick="signupAgent()">
+Create Agent Account
+</button>
+
+<div id="signupError" class="error"></div>
+
+<div style="text-align:center;margin-top:15px;">
+  <button
+    type="button"
+    onclick="showLogin()"
+    style="background:#111827;"
+  >
+    ← Back to Login
+  </button>
+</div>
+
+</div>
+</div>
+</div>
 <!-- APP PAGE -->
 <div id="appPage" class="hidden">
 
@@ -325,7 +407,141 @@ result.data.session.user
 }
 );
 
+function showSignup(){
 
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("signupPage").classList.remove("hidden");
+
+}
+
+
+function showLogin(){
+
+  document.getElementById("signupPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+
+}
+
+
+async function signupAgent(){
+
+  const agentName =
+    document.getElementById("signupAgentName").value.trim();
+
+  const phone =
+    document.getElementById("signupPhone").value.trim();
+
+  const city =
+    document.getElementById("signupCity").value.trim();
+
+  const email =
+    document.getElementById("signupEmail").value.trim();
+
+  const password =
+    document.getElementById("signupPassword").value;
+
+  const confirmPassword =
+    document.getElementById("signupConfirmPassword").value;
+
+  const errorBox =
+    document.getElementById("signupError");
+
+
+  errorBox.style.display = "none";
+  errorBox.innerText = "";
+
+
+  if(!agentName || !phone || !city || !email || !password || !confirmPassword){
+
+    errorBox.innerText =
+      "❌ Sabhi fields fill karein.";
+
+    errorBox.style.display = "block";
+
+    return;
+  }
+
+
+  if(phone.replace(/\D/g,"").length < 10){
+
+    errorBox.innerText =
+      "❌ Valid phone number enter karein.";
+
+    errorBox.style.display = "block";
+
+    return;
+  }
+
+
+  if(password.length < 6){
+
+    errorBox.innerText =
+      "❌ Password kam se kam 6 characters ka hona chahiye.";
+
+    errorBox.style.display = "block";
+
+    return;
+  }
+
+
+  if(password !== confirmPassword){
+
+    errorBox.innerText =
+      "❌ Password aur Confirm Password same nahi hain.";
+
+    errorBox.style.display = "block";
+
+    return;
+  }
+
+
+  const result =
+    await db.auth.signUp({
+
+      email: email,
+
+      password: password,
+
+      options: {
+
+        data: {
+          agent_name: agentName,
+          phone: phone,
+          city: city
+        }
+
+      }
+
+    });
+
+
+  if(result.error){
+
+    errorBox.innerText =
+      "❌ " + result.error.message;
+
+    errorBox.style.display = "block";
+
+    return;
+  }
+
+
+  alert(
+    "✅ Agent account successfully create ho gaya!"
+  );
+
+
+  document.getElementById("signupAgentName").value = "";
+  document.getElementById("signupPhone").value = "";
+  document.getElementById("signupCity").value = "";
+  document.getElementById("signupEmail").value = "";
+  document.getElementById("signupPassword").value = "";
+  document.getElementById("signupConfirmPassword").value = "";
+
+
+  showLogin();
+
+}
 /* LOGIN */
 
 async function login(){
