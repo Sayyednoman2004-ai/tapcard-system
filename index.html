@@ -3,255 +3,1028 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TapCard - Agent Activation</title>
+<title>TapCard - Admin & Agent System</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f6f8;color:#111827;min-height:100vh;padding:20px}
+.container{max-width:1100px;margin:auto}
+.header{text-align:center;margin-bottom:25px}
+.logo{font-size:34px;font-weight:800}
+.logo span{color:#16a34a}
+.subtitle{color:#6b7280;margin-top:6px}
+.card{background:#fff;padding:25px;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.08);margin-bottom:20px}
+.login-box{max-width:450px;margin:50px auto}
+h2{margin-bottom:20px}
+h3{margin-bottom:15px}
+label{display:block;font-weight:600;margin:15px 0 7px}
+input,select{width:100%;padding:13px;border:1px solid #d1d5db;border-radius:10px;font-size:16px;outline:none}
+input:focus,select:focus{border-color:#16a34a}
+button{width:100%;border:0;padding:14px;margin-top:18px;border-radius:10px;background:#16a34a;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+button:hover{opacity:.9}
+.small-btn{width:auto;padding:10px 16px;margin:0}
+.danger{background:#dc2626}
+.hidden{display:none!important}
+.info{margin-top:18px;padding:13px;background:#f0fdf4;color:#166534;border-radius:10px;font-size:14px}
+.error{margin-top:15px;padding:14px;background:#fef2f2;color:#991b1b;border-radius:10px;display:none}
+.success{margin-top:15px;padding:14px;background:#ecfdf5;color:#166534;border-radius:10px;display:none}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.user-info{background:#ecfdf5;color:#166534;padding:10px 14px;border-radius:10px;font-weight:600}
+.role{background:#111827;color:#fff;padding:5px 9px;border-radius:15px;font-size:12px;margin-left:5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.stat{background:#fff;padding:20px;border-radius:16px;box-shadow:0 5px 20px rgba(0,0,0,.06)}
+.stat-title{color:#6b7280;font-size:14px}
+.stat-number{font-size:28px;font-weight:800;margin-top:8px}
+.blue{color:#2563eb}.orange{color:#ea580c}.green{color:#16a34a}.purple{color:#7c3aed}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px}
+th{background:#f9fafb}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:12px;font-weight:700}
+.active{background:#dcfce7;color:#166534}
+.available{background:#fef3c7;color:#92400e}
+.summary{line-height:2;font-size:15px}
 
-body{
-  background:#f4f6f8;
-  min-height:100vh;
-  padding:25px 15px;
+@media(max-width:800px){
+.stats{grid-template-columns:1fr 1fr}
 }
-
-.container{
-  max-width:500px;
-  margin:auto;
-}
-
-.header{
-  text-align:center;
-  margin-bottom:25px;
-}
-
-.logo{
-  font-size:30px;
-  font-weight:800;
-  color:#111827;
-}
-
-.logo span{
-  color:#16a34a;
-}
-
-.subtitle{
-  color:#6b7280;
-  margin-top:7px;
-}
-
-.card{
-  background:white;
-  padding:25px;
-  border-radius:18px;
-  box-shadow:0 8px 30px rgba(0,0,0,.08);
-}
-
-h2{
-  margin-bottom:20px;
-  color:#111827;
-}
-
-label{
-  display:block;
-  font-weight:600;
-  margin:15px 0 7px;
-  color:#374151;
-}
-
-input,select{
-  width:100%;
-  padding:13px;
-  border:1px solid #d1d5db;
-  border-radius:10px;
-  font-size:16px;
-  outline:none;
-}
-
-input:focus,select:focus{
-  border-color:#16a34a;
-}
-
-button{
-  width:100%;
-  border:0;
-  padding:14px;
-  margin-top:22px;
-  border-radius:10px;
-  background:#16a34a;
-  color:white;
-  font-size:17px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-button:active{
-  transform:scale(.98);
-}
-
-.info{
-  margin-top:18px;
-  padding:13px;
-  background:#f0fdf4;
-  border-radius:10px;
-  color:#166534;
-  font-size:14px;
-}
-
-#result{
-  display:none;
-  margin-top:18px;
-  padding:15px;
-  border-radius:10px;
-  background:#ecfdf5;
-  color:#166534;
-  font-weight:600;
+@media(max-width:500px){
+body{padding:12px}
+.card{padding:18px}
+.logo{font-size:30px}
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+
 <div class="container">
 
-  <div class="header">
-    <div class="logo">Tap<span>Card</span></div>
-    <div class="subtitle">Agent Card Activation System</div>
-  </div>
+<div class="header">
+<div class="logo">Tap<span>Card</span></div>
+<div class="subtitle">Admin & Agent Login</div>
+</div>
 
-  <div class="card">
+<div class="card login-box">
 
-    <h2>Activate Card</h2>
+<h2>🔐 Login</h2>
 
-    <label>Card Number</label>
-    <input
-      type="text"
-      id="cardNumber"
-      placeholder="Example: TR0001"
-      autocomplete="off"
-    >
+<label>Email</label>
+<input
+type="email"
+id="loginEmail"
+placeholder="Enter your email"
+>
 
-    <label>Card Type</label>
-    <select id="cardType">
-      <option value="">Select Card Type</option>
-      <option value="google_review">Google Review</option>
-      <option value="whatsapp_group">WhatsApp Group</option>
-      <option value="instagram">Instagram</option>
-    </select>
+<label>Password</label>
+<input
+type="password"
+id="loginPassword"
+placeholder="Enter your password"
+>
 
-    <label>Shop Name</label>
-    <input
-      type="text"
-      id="shopName"
-      placeholder="Example: ABC Mobile"
-    >
+<button onclick="login()">Login</button>
 
-    <label>Customer Link</label>
-    <input
-      type="url"
-      id="destinationUrl"
-      placeholder="Paste customer link here"
-    >
+<div id="loginError" class="error"></div>
 
-    <label>Agent Name</label>
-    <input
-      type="text"
-      id="agentName"
-      placeholder="Example: Rahul"
-    >
+<div class="info">
+🔒 Authorized TapCard Admin & Agent accounts only.
+</div>
 
-    <button onclick="activateCard()">
-      Activate Card
-    </button>
+</div>
 
-    <div class="info">
-      💡 Agent card number aur customer ki link enter karke
-      card activate karega.
-    </div>
+</div>
+</div>
 
-    <div id="result"></div>
 
-  </div>
+<!-- APP PAGE -->
+<div id="appPage" class="hidden">
+
+<div class="container">
+
+<div class="header">
+<div class="logo">Tap<span>Card</span></div>
+<div class="subtitle">Card Management System</div>
+</div>
+
+
+<!-- TOP BAR -->
+<div class="topbar">
+
+<div class="user-info">
+👤 <span id="loggedUser"></span>
+<span id="roleBadge" class="role"></span>
+</div>
+
+<button class="small-btn danger" onclick="logout()">
+Logout
+</button>
 
 </div>
 
 
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard">
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-title">Total Cards</div>
+<div id="totalCards" class="stat-number blue">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-title">Available</div>
+<div id="availableCards" class="stat-number orange">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-title">Activated</div>
+<div id="activatedCards" class="stat-number green">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-title">Instagram</div>
+<div id="instagramCards" class="stat-number purple">0</div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📊 Card Type Summary</h3>
+
+<div id="typeSummary" class="summary">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ACTIVATION -->
+<div class="card">
+
+<h2>⚡ Activate Card</h2>
+
+<label>Card Number</label>
+<input
+type="text"
+id="cardNumber"
+placeholder="Example: TR0005"
+>
+
+<label>Card Type</label>
+
+<select id="cardType">
+
+<option value="">Select Card Type</option>
+
+<option value="google_review">
+Google Review
+</option>
+
+<option value="whatsapp_group">
+WhatsApp Group
+</option>
+
+<option value="instagram">
+Instagram
+</option>
+
+</select>
+
+
+<label>Shop Name</label>
+<input
+type="text"
+id="shopName"
+placeholder="Example: ABC Mobile"
+>
+
+
+<label>Customer Link</label>
+<input
+type="url"
+id="destinationUrl"
+placeholder="Paste customer link here"
+>
+
+
+<label>Agent Name</label>
+<input
+type="text"
+id="agentName"
+placeholder="Example: Rahul"
+>
+
+
+<button onclick="activateCard()">
+🚀 Activate Card
+</button>
+
+<div id="activationError" class="error"></div>
+<div id="activationSuccess" class="success"></div>
+
+<div class="info">
+💡 Card Number, Card Type, Shop Name aur Customer Link enter karke card activate karein.
+</div>
+
+</div>
+
+
+<!-- CARD INVENTORY -->
+<div class="card">
+
+<h2>📋 Card Inventory</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Card</th>
+<th>Type</th>
+<th>Status</th>
+<th>Shop</th>
+<th>Agent</th>
+<th>Activated</th>
+</tr>
+</thead>
+
+<tbody id="cardsTable">
+
+<tr>
+<td colspan="6">Loading...</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://wtuisojeevsibpjrdvwd.supabase.co";
-const SUPABASE_KEY = "sb_publishable_yxmvigaGlrS8VIb_x_2RkQ_Q81kRd8b";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+/* SUPABASE CONFIG */
+
+const SUPABASE_URL =
+"https://wtuisojeevsibpjrdwdw.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_yxmvigaGlrS8VIb_x_2RkQ_Q81kRd8b";
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
-async function activateCard() {
-  const cardNumber = document.getElementById("cardNumber").value.trim();
-  const cardType = document.getElementById("cardType").value;
-  const shopName = document.getElementById("shopName").value.trim();
-  const destinationUrl = document.getElementById("destinationUrl").value.trim();
-  const agentName = document.getElementById("agentName").value.trim();
-  const result = document.getElementById("result");
 
-  result.style.display = "block";
+/* CURRENT USER */
 
-  if (!cardNumber || !cardType || !shopName || !destinationUrl || !agentName) {
-    result.style.background = "#fef2f2";
-    result.style.color = "#991b1b";
-    result.innerHTML = "❌ Please fill all fields.";
-    return;
-  }
+let currentUser = null;
+let currentRole = null;
 
-  try {
-    new URL(destinationUrl);
-  } catch {
-    result.style.background = "#fef2f2";
-    result.style.color = "#991b1b";
-    result.innerHTML = "❌ Please enter a valid URL.";
-    return;
-  }
 
-  const { data, error } = await db
-    .from("cards")
-    .update({
-      card_type: cardType,
-      shop_name: shopName,
-      destination_url: destinationUrl,
-      agent_name: agentName,
-      status: "Activated",
-      activated_at: new Date().toISOString()
-    })
-    .eq("card_number", cardNumber)
-    .eq("status", "Available")
-    .select();
+/* START */
 
-  if (error) {
-    result.style.background = "#fef2f2";
-    result.style.color = "#991b1b";
-    result.innerHTML = "❌ Error: " + error.message;
-    return;
-  }
+document.addEventListener(
+"DOMContentLoaded",
+async function(){
 
-  if (!data || data.length === 0) {
-    result.style.background = "#fff7ed";
-    result.style.color = "#9a3412";
-    result.innerHTML = "⚠️ Card not found or already activated.";
-    return;
-  }
+const result =
+await db.auth.getSession();
 
-  result.style.background = "#ecfdf5";
-  result.style.color = "#166534";
-  result.innerHTML =
-    "✅ Card activated successfully!<br><br>" +
-    "Card: " + cardNumber + "<br>" +
-    "Shop: " + shopName + "<br>" +
-    "Type: " + cardType + "<br>" +
-    "Agent: " + agentName;
+if(
+result.data &&
+result.data.session
+){
+
+await loadUser(
+result.data.session.user
+);
+
 }
-  </script>
+
+}
+);
+
+
+/* LOGIN */
+
+async function login(){
+
+const email =
+document
+.getElementById("loginEmail")
+.value
+.trim();
+
+const password =
+document
+.getElementById("loginPassword")
+.value;
+
+const errorBox =
+document.getElementById("loginError");
+
+errorBox.style.display =
+"none";
+
+if(!email || !password){
+
+errorBox.innerText =
+"❌ Email aur password enter karein.";
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+const result =
+await db.auth.signInWithPassword({
+
+email:email,
+password:password
+
+});
+
+
+if(result.error){
+
+errorBox.innerText =
+"❌ " + result.error.message;
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+if(!result.data.user){
+
+errorBox.innerText =
+"❌ Login failed.";
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+await loadUser(
+result.data.user
+);
+
+}
+
+
+/* LOAD USER */
+
+async function loadUser(user){
+
+currentUser =
+user;
+
+
+const result =
+await db
+.from("user_roles")
+.select("role")
+.eq("user_id",user.id)
+.single();
+
+
+if(result.error || !result.data){
+
+await db.auth.signOut();
+
+alert(
+"❌ Is account ka TapCard role set nahi hai."
+);
+
+return;
+
+}
+
+
+currentRole =
+result.data.role;
+
+
+document
+.getElementById("loginPage")
+.classList
+.add("hidden");
+
+document
+.getElementById("appPage")
+.classList
+.remove("hidden");
+
+
+document
+.getElementById("loggedUser")
+.innerText =
+user.email;
+
+
+document
+.getElementById("roleBadge")
+.innerText =
+currentRole.toUpperCase();
+
+
+if(currentRole === "admin"){
+
+document
+.getElementById("adminDashboard")
+.classList
+.remove("hidden");
+
+}else{
+
+document
+.getElementById("adminDashboard")
+.classList
+.add("hidden");
+
+}
+
+
+const agentInput =
+document.getElementById("agentName");
+
+
+if(currentRole === "agent"){
+
+agentInput.value =
+user.email;
+
+agentInput.readOnly =
+true;
+
+}else{
+
+agentInput.value =
+"";
+
+agentInput.readOnly =
+false;
+
+}
+
+
+await loadCards();
+
+}
+
+
+/* LOGOUT */
+
+async function logout(){
+
+await db.auth.signOut();
+
+currentUser =
+null;
+
+currentRole =
+null;
+
+document
+.getElementById("appPage")
+.classList
+.add("hidden");
+
+document
+.getElementById("loginPage")
+.classList
+.remove("hidden");
+
+document
+.getElementById("loginPassword")
+.value =
+"";
+
+}
+
+
+/* ACTIVATE CARD */
+
+async function activateCard(){
+
+const cardNumber =
+document
+.getElementById("cardNumber")
+.value
+.trim()
+.toUpperCase();
+
+const cardType =
+document
+.getElementById("cardType")
+.value;
+
+const shopName =
+document
+.getElementById("shopName")
+.value
+.trim();
+
+const destinationUrl =
+document
+.getElementById("destinationUrl")
+.value
+.trim();
+
+const agentName =
+document
+.getElementById("agentName")
+.value
+.trim();
+
+const errorBox =
+document.getElementById(
+"activationError"
+);
+
+const successBox =
+document.getElementById(
+"activationSuccess"
+);
+
+errorBox.style.display =
+"none";
+
+successBox.style.display =
+"none";
+
+
+if(
+!cardNumber ||
+!cardType ||
+!shopName ||
+!destinationUrl ||
+!agentName
+){
+
+errorBox.innerText =
+"❌ Please fill all fields.";
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+try{
+
+new URL(destinationUrl);
+
+}catch{
+
+errorBox.innerText =
+"❌ Please enter a valid URL.";
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+if(!currentUser){
+
+errorBox.innerText =
+"❌ Please login first.";
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+/* UPDATE CARD */
+
+const result =
+await db
+.from("cards")
+.update({
+
+card_type:cardType,
+
+shop_name:shopName,
+
+destination_url:destinationUrl,
+
+agent_name:agentName,
+
+status:"Activated",
+
+activated_at:
+new Date().toISOString()
+
+})
+.eq(
+"card_number",
+cardNumber
+)
+.eq(
+"status",
+"Available"
+)
+.select();
+
+
+if(result.error){
+
+errorBox.innerText =
+"❌ Error: " +
+result.error.message;
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+if(
+!result.data ||
+result.data.length === 0
+){
+
+errorBox.innerText =
+"⚠️ Card not found ya already activated hai.";
+
+errorBox.style.display =
+"block";
+
+return;
+
+}
+
+
+successBox.innerHTML =
+"✅ Card activated successfully!<br><br>" +
+
+"<b>Card:</b> " +
+escapeHTML(cardNumber) +
+"<br>" +
+
+"<b>Shop:</b> " +
+escapeHTML(shopName) +
+"<br>" +
+
+"<b>Type:</b> " +
+escapeHTML(cardType) +
+"<br>" +
+
+"<b>Agent:</b> " +
+escapeHTML(agentName);
+
+
+successBox.style.display =
+"block";
+
+
+document
+.getElementById("cardNumber")
+.value="";
+
+document
+.getElementById("cardType")
+.value="";
+
+document
+.getElementById("shopName")
+.value="";
+
+document
+.getElementById("destinationUrl")
+.value="";
+
+
+if(currentRole === "admin"){
+
+document
+.getElementById("agentName")
+.value="";
+
+}
+
+
+await loadCards();
+
+}
+
+
+/* LOAD CARDS */
+
+async function loadCards(){
+
+const result =
+await db
+.from("cards")
+.select("*")
+.order(
+"id",
+{ascending:true}
+);
+
+
+if(result.error){
+
+document
+.getElementById("cardsTable")
+.innerHTML =
+"<tr><td colspan='6'>❌ " +
+escapeHTML(
+result.error.message
+) +
+"</td></tr>";
+
+return;
+
+}
+
+
+const cards =
+result.data || [];
+
+
+updateStats(cards);
+
+
+const table =
+document.getElementById(
+"cardsTable"
+);
+
+
+if(cards.length === 0){
+
+table.innerHTML =
+"<tr><td colspan='6'>No cards found.</td></tr>";
+
+return;
+
+}
+
+
+let html="";
+
+
+cards.forEach(
+function(card){
+
+const statusClass =
+card.status === "Activated"
+? "active"
+: "available";
+
+
+const activated =
+card.activated_at
+? formatDate(
+card.activated_at
+)
+:"-";
+
+
+html +=
+
+"<tr>" +
+
+"<td><b>" +
+escapeHTML(
+card.card_number
+) +
+"</b></td>" +
+
+"<td>" +
+formatType(
+card.card_type
+) +
+"</td>" +
+
+"<td><span class='badge " +
+statusClass +
+"'>" +
+escapeHTML(
+card.status || "-"
+) +
+"</span></td>" +
+
+"<td>" +
+escapeHTML(
+card.shop_name || "-"
+) +
+"</td>" +
+
+"<td>" +
+escapeHTML(
+card.agent_name || "-"
+) +
+"</td>" +
+
+"<td>" +
+activated +
+"</td>" +
+
+"</tr>";
+
+}
+);
+
+
+table.innerHTML =
+html;
+
+}
+
+
+/* DASHBOARD */
+
+function updateStats(cards){
+
+const total =
+cards.length;
+
+const available =
+cards.filter(
+c => c.status === "Available"
+).length;
+
+const activated =
+cards.filter(
+c => c.status === "Activated"
+).length;
+
+const instagram =
+cards.filter(
+c => c.card_type === "instagram"
+).length;
+
+const google =
+cards.filter(
+c => c.card_type === "google_review"
+).length;
+
+const whatsapp =
+cards.filter(
+c => c.card_type === "whatsapp_group"
+).length;
+
+
+document.getElementById(
+"totalCards"
+).innerText =
+total;
+
+document.getElementById(
+"availableCards"
+).innerText =
+available;
+
+document.getElementById(
+"activatedCards"
+).innerText =
+activated;
+
+document.getElementById(
+"instagramCards"
+).innerText =
+instagram;
+
+
+document.getElementById(
+"typeSummary"
+).innerHTML =
+
+"⭐ Google Review: <b>" +
+google +
+"</b><br>" +
+
+"🟢 WhatsApp Group: <b>" +
+whatsapp +
+"</b><br>" +
+
+"📸 Instagram: <b>" +
+instagram +
+"</b>";
+
+}
+
+
+/* TYPE */
+
+function formatType(type){
+
+if(type === "google_review")
+return "⭐ Google Review";
+
+if(type === "whatsapp_group")
+return "🟢 WhatsApp Group";
+
+if(type === "instagram")
+return "📸 Instagram";
+
+return "-";
+
+}
+
+
+/* DATE */
+
+function formatDate(date){
+
+try{
+
+return new Date(date)
+.toLocaleString(
+"en-IN",
+{
+dateStyle:"short",
+timeStyle:"short"
+}
+);
+
+}catch{
+
+return "-";
+
+}
+
+}
+
+
+/* SECURITY */
+
+function escapeHTML(value){
+
+return String(value || "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* AUTH LISTENER */
+
+db.auth.onAuthStateChange(
+function(event,session){
+
+if(event === "SIGNED_OUT"){
+
+document
+.getElementById("appPage")
+.classList
+.add("hidden");
+
+document
+.getElementById("loginPage")
+.classList
+.remove("hidden");
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
