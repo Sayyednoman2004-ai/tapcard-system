@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TapCard</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  text-align:center;
+}
+
+.box{
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>TapCard</h2>
+  <p id="message">Please wait...</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL = "https://wtuisojeevsibpjrdvwd.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_yxmvigaGlrS8VIb_x_2RkQ_Q81kRd8b";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function redirectCard(){
+
+  const params = new URLSearchParams(window.location.search);
+
+  const cardNumber = params.get("card");
+
+  const message = document.getElementById("message");
+
+  if(!cardNumber){
+    message.innerHTML = "❌ Card number missing.";
+    return;
+  }
+
+  const { data, error } = await db
+    .from("cards")
+    .select("destination_url,status")
+    .eq("card_number", cardNumber)
+    .eq("status", "Activated")
+    .single();
+
+  if(error || !data){
+    message.innerHTML = "❌ Card not found or not activated.";
+    return;
+  }
+
+  if(!data.destination_url){
+    message.innerHTML = "❌ Destination link not available.";
+    return;
+  }
+
+  message.innerHTML = "🔄 Redirecting...";
+
+  window.location.href = data.destination_url;
+}
+
+redirectCard();
+
+</script>
+
+</body>
+</html>
